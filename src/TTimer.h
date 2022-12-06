@@ -6,38 +6,35 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+#include <mutex>
+
+
 class TTimer : public QObject
 {
     Q_OBJECT
 public:
     TTimer(QObject *parent = Q_NULLPTR);
     ~TTimer();
-    inline bool isActive() const { return id >= 0; }
-    int timerId() const { return id; }
-
-    void setInterval(int msec);
-    int interval() const { return inter; }
-
-
-public Q_SLOTS:
     void start(int msec);
     void start();
     void stop();
-
-Q_SIGNALS:
+    void getEvent(int msec);
+    void myTimerEvent();
+    void eventFunc();
+signals:
     void timeout();
-
-protected:
-    void timerEvent(QTimerEvent *);
+public slots:
+    void run();
+    void process();
 private:
-    Q_DISABLE_COPY(TTimer)
-
-    inline int startTimer(int){ return -1;}
-    inline void killTimer(int){}
-
-    int id, inter, del;
-    uint single : 1;
-    uint nulltimer : 1;
+    int msec_;
+    int id_ = 0;
+    int count_ = 0;
+    std::mutex mutex_;
+    std::thread t_;
+    std::thread tEvent_;
+    bool isStart_ = true;
+    bool isStop_ = false;
 };
 
 #endif // TTIMER_H

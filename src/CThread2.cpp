@@ -8,6 +8,6 @@ CThread2::CThread2(QThread *parent)
 
 void CThread2::run()
 {
-    std::cout << "thread 2 started" << std::endl;
+    std::cout << "thread 2 started\n" << std::endl;
     exec();
 }
