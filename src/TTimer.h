@@ -7,8 +7,6 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
-
-
 class TTimer : public QObject
 {
     Q_OBJECT
@@ -18,23 +16,18 @@ public:
     void start(int msec);
     void start();
     void stop();
-    void getEvent(int msec);
-    void myTimerEvent();
-    void eventFunc();
+    void getEvent();
 signals:
     void timeout();
-public slots:
-    void run();
-    void process();
 private:
+    std::mutex m_;
+    int tempInitStart_;
+    int tempCount_;
     int msec_;
-    int id_ = 0;
-    int count_ = 0;
-    std::mutex mutex_;
     std::thread t_;
-    std::thread tEvent_;
-    bool isStart_ = true;
-    bool isStop_ = false;
+    bool isStart_;
+    bool setThreat_;
 };
+
 
 #endif // TTIMER_H
